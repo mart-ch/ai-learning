@@ -8,7 +8,7 @@ Meine persönliche Dokumentation zu AI-Themen, die ich lerne. Jedes Thema hat ei
 > - einem Abschnitt **Status & Änderungen** (letztes Prüfdatum, was seit der Ursprungsdoku veraltet ist),
 > - verlinkten Original-Quellen und einem Verweis auf das nächste Topik.
 
-Die Topics bauen **logisch aufeinander auf**: oMLX (LLM-Server) → Open WebUI (Chat darauf) → OpenCode (Coding-Agent darauf) → OpenCode-Vertiefung.
+Die Topics bauen **logisch aufeinander auf**: oMLX (LLM-Server) → Open WebUI (Chat darauf) → OpenCode (Coding-Agent darauf) → LLM-Tuning (beide Configs abstimmen).
 
 ## Themen
 
@@ -17,7 +17,7 @@ Die Topics bauen **logisch aufeinander auf**: oMLX (LLM-Server) → Open WebUI (
 | 01 | oMLX: Lokaler LLM-Server (Brew, Modell, MTP, Probleme) | [`topics/01-omlx-local-llm/`](topics/01-omlx-local-llm/) | Okt 2026 | ✅ dokumentiert |
 | 02 | Open WebUI: Chat-Funktionalität (Docker, Konfiguration) | [`topics/02-open-webui/`](topics/02-open-webui/) | Okt 2026 | ✅ dokumentiert |
 | 03 | OpenCode: Installation & Konfiguration mit lokalem oMLX | [`topics/03-opencode-local-omlx/`](topics/03-opencode-local-omlx/) | Okt 2026 | ✅ dokumentiert |
-| 04 | OpenCode: Konfiguration und Tuning (V2) | [`topics/04-opencode-tuning/`](topics/04-opencode-tuning/) | Okt 2026 | ✅ dokumentiert |
+| 04 | LLM Tuning: OMLX Modellconfig + Opencode Config abstimmen | [`topics/04-llm-tuning/`](topics/04-llm-tuning/) | Okt 2026 | ✅ dokumentiert |
 | 05 | _(folgt)_ | – | – | 🚧 in Arbeit |
 
 ## Themen im Detail
@@ -54,16 +54,15 @@ OpenCode **V2** als Coding-Agent, der das lokale Qwen-Modell aus Topik 01 nutzt 
 
 → [Zur Doku](topics/03-opencode-local-omlx/)
 
-### 04 · OpenCode: Konfiguration und Tuning (V2)
+### 04 · LLM Tuning: OMLX Modellconfig + Opencode Config
 
-Vertiefung zu Topik 03 — das komplette V2-Werkzeug:
+Vertiefung zu Topik 01 und 03 — die zwei Configs des lokalen Stacks aufeinander abstimmen, damit das System nicht beeinträchtigt wird:
 
-- Config-Dateien (global/projekt, JSONC, Merge-Priorität, Hot-Reload)
-- Modelle: lokale Discovery (Ollama, LM Studio, vLLM), `settings`/`variants`/`limits`, Compaction
-- Agents, Permissions (`allow`/`ask`/`deny`), Commands, `AGENTS.md`, MCP-Server, Plugins
-- Troubleshooting: Service, Logs, Standalone-Modus
+- **OMLX Modellconfig** (Server): Memory Guard (Tiers, Watermarks), Memory-Mathematik (Gewichte + KV-Cache), Modell-Einstellungen, TTL, Admin API
+- **Opencode Config** (Client): Config-Dateien, Modelle, Tuning, Agents, Permissions, Commands, `AGENTS.md`, MCP, Plugins, Compaction, Troubleshooting
+- **Abstimmung:** Memory-Budget-Tabelle — `limit.context` (Client) ≤ `max_context_window` (Server) ≤ Memory-Guard-Limit; „Stable 64k" als angewendetes Beispiel
 
-→ [Zur Doku](topics/04-opencode-tuning/)
+→ [Zur Doku](topics/04-llm-tuning/)
 
 ### 05 · folgt
 
