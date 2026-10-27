@@ -2,6 +2,9 @@
 
 **Open WebUI** ist eine Chat-Oberfläche für LLMs. Sie läuft als Docker-Container und verbindet sich mit dem lokalen oMLX-Server aus [Topik 01](../01-omlx-local-llm/) über dessen OpenAI-kompatible API — ohne dass oMLX selbst im Docker-Container laufen muss.
 
+<img width="1198" height="507" alt="image" src="https://github.com/user-attachments/assets/e36db9d5-a002-4d09-becb-bfbb7d09dd33" />
+
+
 ## Status & Änderungen
 
 | | |
