@@ -1,11 +1,41 @@
 # 04 · LLM Tuning
 
-Dieses Topik deckt das Tuning des kompletten lokalen LLM-Stacks ab — nicht nur eine Seite, sondern **zwei Konfigurationen, die aufeinander abgestimmt sein müssen**:
+Dieses Thema deckt das Tuning des kompletten lokalen LLM-Stacks ab — nicht nur eine Seite, sondern **zwei Konfigurationen, die aufeinander abgestimmt sein müssen**:
 
 - **OMLX Modellconfig** (Server-Seite): Wie viel RAM das Modell nutzen darf, welche Kontextgröße der Server stemmt, Memory Guard, KV-Cache.
 - **Opencode Config** (Client-Seite): Was OpenCode vom Modell anfordert — `limit.context`, Compaction, Agents, Permissions, Commands.
 
 Das zentrale Prinzip: **OpenCodes `limit.context` darf nicht größer sein, als oMLX es im Unified Memory tatsächlich stemmen kann.** Sonst läuft das System in Swap, der Memory Guard greift, und Sessions werden abgebrochen. Beide Configs sind zwei Seiten derselben Medaille — die Memory-Budget-Tabelle in Abschnitt 4 ist die gemeinsame Referenz.
+
+## Inhaltsverzeichnis
+
+- [Status & Änderungen](#status--änderungen)
+- [1. Abstimmungsprinzip: Zwei Configs, ein System](#1-abstimmungsprinzip-zwei-configs-ein-system)
+- [2. OMLX Modellconfig (Server-Seite)](#2-omlx-modellconfig-server-seite)
+  - [2.1 Memory Guard: Tiers und Watermarks](#21-memory-guard-tiers-und-watermarks)
+  - [2.2 Memory-Mathematik: Gewichte + KV-Cache](#22-memory-mathematik-gewichte--kv-cache)
+  - [2.3 Wichtige Modell-Einstellungen](#23-wichtige-modell-einstellungen)
+  - [2.4 TTL: Auto-Unload (aktuell deaktiviert)](#24-ttl-auto-unload-aktuell-deaktiviert)
+  - [2.5 Admin API](#25-admin-api)
+  - [2.6 „Stable 64k" — die angewendete Konfiguration](#26-stable-64k--die-angewendete-konfiguration)
+- [3. Opencode Config (Client-Seite)](#3-opencode-config-client-seite)
+  - [3.1 Architektur: Client + Hintergrund-Service](#31-architektur-client--hintergrund-service)
+  - [3.2 Config-Dateien und Priorität](#32-config-dateien-und-priorität)
+  - [3.3 Modelle auswählen](#33-modelle-auswählen)
+  - [3.4 Tuning: Settings, Headers, Body, Limits, Variants](#34-tuning-settings-headers-body-limits-variants)
+  - [3.5 Agents](#35-agents)
+  - [3.6 Permissions](#36-permissions)
+  - [3.7 Commands](#37-commands)
+  - [3.8 Instructions: AGENTS.md](#38-instructions-agentsmd)
+  - [3.9 MCP-Server](#39-mcp-server)
+  - [3.10 Plugins](#310-plugins)
+  - [3.11 Compaction (lange Sessions)](#311-compaction-lange-sessions)
+  - [3.12 Troubleshooting](#312-troubleshooting)
+  - [3.13 Checkliste für ein neues Projekt](#313-checkliste-für-ein-neues-projekt)
+- [4. Abstimmung in der Praxis: Memory-Budget](#4-abstimmung-in-der-praxis-memory-budget)
+  - [Fallbacks](#fallbacks)
+  - [Bewusst nicht geändert](#bewusst-nicht-geändert)
+- [Quellen](#quellen)
 
 ## Status & Änderungen
 
@@ -13,7 +43,7 @@ Das zentrale Prinzip: **OpenCodes `limit.context` darf nicht größer sein, als 
 |---|---|
 | **Letzte Prüfung** | 27.10.2026 |
 | **Quellen** | <https://opencode.ai/v2/docs/> (Config, Providers, Models, Agents, Permissions, Commands, Instructions, Compaction, Troubleshooting); oMLX-Quellcode (`process_memory_enforcer.py`, `model_settings.py`, `engine_pool.py`); Session-Erfahrung 27.10.2026 („Stable 64k") |
-| **Position** | Vertiefung zu [Topik 01](../01-omlx-local-llm/) (oMLX-Server) und [Topik 03](../03-opencode-local-omlx/) (OpenCode + oMLX-Anbindung) |
+| **Position** | Vertiefung zu [Thema 01](../01-omlx-local-llm/) (oMLX-Server) und [Thema 03](../03-opencode-local-omlx/) (OpenCode + oMLX-Anbindung) |
 
 > ⚠️ **V1 vs. V2:** OpenCode 1 und 2 nutzen beide den `opencode`-Befehl, werden aber nicht mehr parallel installiert. Das V2-Curl-Installer ersetzt die V1-Binary; eine paketverwaltete V1-Installation vorher entfernen. V1-Config-Dateien bleiben großteils kompatibel, aber die nativen V2-Formen sind bevorzugt. V1-Doku: <https://opencode.ai/docs/> (veraltet).
 
@@ -213,7 +243,7 @@ Referenz-Syntax: `provider/model` (optional `#variant`):
 
 Der Root-Default trägt aktuell **keinen** `#variant` — Variants werden bei Agenten und Commands gewählt.
 
-#### Local Modelle (relevanter Teil fürs [Topik 01](../01-omlx-local-llm/))
+#### Local Modelle (relevanter Teil fürs [Thema 01](../01-omlx-local-llm/))
 
 OpenCode entdeckt **automatisch** Modelle von **Ollama**, **LM Studio** und **vLLM** an ihren Standard-Adressen:
 
@@ -299,7 +329,7 @@ Provider- und Modell-Einträge dürfen Requests mit `settings`, `headers` und `b
 "limit": { "context": 200000, "output": 32000 }
 ```
 
-Für lokale Modelle (kleiner RAM) bewusst klein halten, siehe [Topik 01](../01-omlx-local-llm/), Abschnitt 4.
+Für lokale Modelle (kleiner RAM) bewusst klein halten, siehe [Thema 01](../01-omlx-local-llm/), Abschnitt 4.
 
 #### 3.4.3 Variants
 

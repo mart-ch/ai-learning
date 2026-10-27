@@ -6,7 +6,7 @@ Meine persönliche Dokumentation zu AI-Themen, die ich lerne. Jedes Thema hat ei
 >
 > - dem eigentlichen Lerninhalt,
 > - einem Abschnitt **Status & Änderungen** (letztes Prüfdatum, was seit der Ursprungsdoku veraltet ist),
-> - verlinkten Original-Quellen und einem Verweis auf das nächste Topik.
+> - verlinkten Original-Quellen und einem Verweis auf das nächste Thema.
 
 Die Topics bauen **logisch aufeinander auf**: oMLX (LLM-Server) → Open WebUI (Chat darauf) → OpenCode (Coding-Agent darauf) → LLM-Tuning (beide Configs abstimmen).
 
@@ -35,7 +35,7 @@ Die Topics bauen **logisch aufeinander auf**: oMLX (LLM-Server) → Open WebUI (
 
 ### 02 · Open WebUI: Chat-Funktionalität
 
-Chat-Oberfläche als Docker-Container, angebunden an oMLX aus Topik 01 — ohne dass die Inference in Docker läuft.
+Chat-Oberfläche als Docker-Container, angebunden an oMLX aus Thema 01 — ohne dass die Inference in Docker läuft.
 
 - Docker-Setup: `docker run`-Flags, persistentes Volume, `WEBUI_SECRET_KEY`
 - Konfiguration: OpenAI-API-Connection mit `host.docker.internal:8000/v1`
@@ -45,7 +45,7 @@ Chat-Oberfläche als Docker-Container, angebunden an oMLX aus Topik 01 — ohne 
 
 ### 03 · OpenCode: Installation & Konfiguration mit lokalem oMLX
 
-OpenCode **V2** als Coding-Agent, der das lokale Qwen-Modell aus Topik 01 nutzt — komplett ohne Cloud.
+OpenCode **V2** als Coding-Agent, der das lokale Qwen-Modell aus Thema 01 nutzt — komplett ohne Cloud.
 
 - V2-Installation (Homebrew bevorzugt: `anomalyco/tap/opencode-v2`; Alternativen: curl, npm) + V1→V2-Umstellung
 - oMLX als Provider: native V2-Config, inkl. realistischem Beispiel (Qwen3.8-27B, ohne API-Key)
@@ -56,7 +56,7 @@ OpenCode **V2** als Coding-Agent, der das lokale Qwen-Modell aus Topik 01 nutzt 
 
 ### 04 · LLM Tuning: OMLX Modellconfig + Opencode Config
 
-Vertiefung zu Topik 01 und 03 — die zwei Configs des lokalen Stacks aufeinander abstimmen, damit das System nicht beeinträchtigt wird:
+Vertiefung zu Thema 01 und 03 — die zwei Configs des lokalen Stacks aufeinander abstimmen, damit das System nicht beeinträchtigt wird:
 
 - **OMLX Modellconfig** (Server): Memory Guard (Tiers, Watermarks), Memory-Mathematik (Gewichte + KV-Cache), Modell-Einstellungen, TTL, Admin API
 - **Opencode Config** (Client): Config-Dateien, Modelle, Tuning, Agents, Permissions, Commands, `AGENTS.md`, MCP, Plugins, Compaction, Troubleshooting

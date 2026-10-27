@@ -1,9 +1,24 @@
 # 02 · Open WebUI: Chat-Funktionalität
 
-**Open WebUI** ist eine Chat-Oberfläche für LLMs. Sie läuft als Docker-Container und verbindet sich mit dem lokalen oMLX-Server aus [Topik 01](../01-omlx-local-llm/) über dessen OpenAI-kompatible API — ohne dass oMLX selbst im Docker-Container laufen muss.
+**Open WebUI** ist eine Chat-Oberfläche für LLMs. Sie läuft als Docker-Container und verbindet sich mit dem lokalen oMLX-Server aus [Thema 01](../01-omlx-local-llm/) über dessen OpenAI-kompatible API — ohne dass oMLX selbst im Docker-Container laufen muss.
 
 <img width="1198" height="507" alt="image" src="https://github.com/user-attachments/assets/e36db9d5-a002-4d09-becb-bfbb7d09dd33" />
 
+
+## Inhaltsverzeichnis
+
+- [Status & Änderungen](#status--änderungen)
+- [1. Voraussetzungen](#1-voraussetzungen)
+- [2. Schlüssel erzeugen (Optional)](#2-schlüssel-erzeugen-optional)
+- [3. Container starten](#3-container-starten)
+- [4. oMLX mit Open WebUI verbinden (Konfiguration)](#4-omlx-mit-open-webui-verbinden-konfiguration)
+- [5. Start, Stopp, Logs, Updates](#5-start-stopp-logs-updates)
+- [6. Probleme und Lösungen](#6-probleme-und-lösungen)
+  - [Open WebUI erreicht oMLX nicht](#open-webui-erreicht-omlx-nicht)
+  - [Modell erscheint nicht im Modellmenü](#modell-erscheint-nicht-im-modellmenü)
+  - [Open WebUI ist langsam](#open-webui-ist-langsam)
+- [Nächste Schritte](#nächste-schritte)
+- [Quellen](#quellen)
 
 ## Status & Änderungen
 
@@ -20,7 +35,7 @@
 
 ## 1. Voraussetzungen
 
-1. **oMLX läuft** mit geladenem Modell (→ [Topik 01](../01-omlx-local-llm/))
+1. **oMLX läuft** mit geladenem Modell (→ [Thema 01](../01-omlx-local-llm/))
 
 ```
 curl -s http://127.0.0.1:8000/v1/models | jq
@@ -111,7 +126,7 @@ Der API-Key kann bei einem ausschließlich lokalen oMLX-Server ein beliebiger ni
 
 > Innerhalb eines Docker-Containers zeigt `localhost` auf den Container selbst. Deshalb muss hier `host.docker.internal` statt `localhost` verwendet werden.
 
-Danach sollte das Qwen-Modell aus [Topik 01](../01-omlx-local-llm/) im Modellmenü erscheinen und Chat-Interaktionen laufen über oMLX (inkl. MTP — das ist eine Eigenschaft von Modell/Server, nicht der Weboberfläche).
+Danach sollte das Qwen-Modell aus [Thema 01](../01-omlx-local-llm/) im Modellmenü erscheinen und Chat-Interaktionen laufen über oMLX (inkl. MTP — das ist eine Eigenschaft von Modell/Server, nicht der Weboberfläche).
 
 ---
 
@@ -179,7 +194,7 @@ Erscheint hier die Modellliste, ist oMLX erreichbar — dann in Open WebUI Conne
 
 ### Open WebUI ist langsam
 
-- Kontextlänge in oMLX reduzieren (→ [Topik 01](../01-omlx-local-llm/), Abschnitt 4, Schritt 8)
+- Kontextlänge in oMLX reduzieren (→ [Thema 01](../01-omlx-local-llm/), Abschnitt 4, Schritt 8)
 - Open-WebUI-RAG und lokale Embedding-Modelle zunächst deaktivieren (speicherverbrauchend)
 - `docker logs -f open-webui` auf oMLX-Fehler prüfen
 
@@ -187,7 +202,7 @@ Erscheint hier die Modellliste, ist oMLX erreichbar — dann in Open WebUI Conne
 
 ## Nächste Schritte
 
-- [Topik 03: OpenCode — Coding-Agent mit lokalem oMLX](../03-opencode-local-omlx/)
+- [Thema 03: OpenCode — Coding-Agent mit lokalem oMLX](../03-opencode-local-omlx/)
 
 ## Quellen
 

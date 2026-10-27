@@ -1,11 +1,37 @@
 # 01 · oMLX: Lokaler LLM-Server auf dem Mac
 
-**oMLX** ist ein LLM-Inference-Server für Apple Silicon (Continuous Batching, SSD-Caching, macOS-Menüleiste). Er ist die **einzige Inference-Schicht** des lokalen Stacks: danach bauen [Open WebUI (Topik 02)](../02-open-webui/) für Chats und [OpenCode (Topik 03)](../03-opencode-local-omlx/) für Coding auf dieselbe OpenAI-kompatible API auf.
+**oMLX** ist ein LLM-Inference-Server für Apple Silicon (Continuous Batching, SSD-Caching, macOS-Menüleiste). Er ist die **einzige Inference-Schicht** des lokalen Stacks: danach bauen [Open WebUI (Thema 02)](../02-open-webui/) für Chats und [OpenCode (Thema 03)](../03-opencode-local-omlx/) für Coding auf dieselbe OpenAI-kompatible API auf.
 
 <img width="1320" height="931" alt="image" src="https://github.com/user-attachments/assets/c3316931-aa5e-4542-8076-3e08f8134beb" />
 
 
 > **Wichtige Begriffsklärung:** **MTP** bedeutet *Multi-Token Prediction* und beschleunigt die Textgenerierung. **MCP** bedeutet *Model Context Protocol* und bindet Werkzeuge oder Datenquellen an. Für die Modellgeschwindigkeit braucht ihr MTP. MCP ist optional.
+
+## Inhaltsverzeichnis
+
+- [Status & Änderungen](#status--änderungen)
+- [1. Voraussetzungen prüfen](#1-voraussetzungen-prüfen)
+- [2. Grundwerkzeuge installieren](#2-grundwerkzeuge-installieren)
+  - [2.1 Homebrew](#21-homebrew)
+  - [2.2 Hilfsprogramme](#22-hilfsprogramme)
+- [3. oMLX installieren](#3-omlx-installieren)
+  - [Empfohlene Variante: Homebrew](#empfohlene-variante-homebrew)
+  - [Alternative: native macOS-App](#alternative-native-macos-app)
+- [4. Passendes Qwen-Modell (LLM) auswählen](#4-passendes-qwen-modell-llm-auswählen)
+  - [Orientierung nach Arbeitsspeicher](#orientierung-nach-arbeitsspeicher)
+  - [Empfehlung für ein normales M3 MacBook](#empfehlung-für-ein-normales-m3-macbook)
+  - [Modell über oMLX herunterladen](#modell-über-omlx-herunterladen)
+- [5. oMLX und MTP testen](#5-omlx-und-mtp-testen)
+- [6. Start, Stopp und Updates](#6-start-stopp-und-updates)
+- [7. Probleme und Lösungen](#7-probleme-und-lösungen)
+  - [`Connection refused` auf Port 8000](#auf-port-8000)
+  - [Mac wird langsam oder Anwendungen schließen sich](#mac-wird-langsam-oder-anwendungen-schließen-sich)
+  - [MTP scheint nicht aktiv zu sein](#mtp-scheint-nicht-aktiv-zu-sein)
+  - [Port 8000 belegt (App + Homebrew parallel)](#port-8000-belegt-app--homebrew-parallel)
+- [8. Sicherheit: nur lokal lauschen](#8-sicherheit-nur-lokal-lauschen)
+- [9. Funktionstest](#9-funktionstest)
+- [Nächste Schritte](#nächste-schritte)
+- [Quellen](#quellen)
 
 ## Status & Änderungen
 
@@ -81,7 +107,7 @@ brew --version
 brew install git curl jq
 ```
 
-> Docker wird für oMLX **nicht** benötigt — erst für Open WebUI in [Topik 02](../02-open-webui/).
+> Docker wird für oMLX **nicht** benötigt — erst für Open WebUI in [Thema 02](../02-open-webui/).
 
 ---
 
@@ -354,7 +380,7 @@ curl -s http://127.0.0.1:8000/v1/models | jq
 Die fertige Architektur sieht dann so aus:
 
 ```
-Open WebUI (Topik 02)         OpenCode (Topik 03)
+Open WebUI (Thema 02)         OpenCode (Thema 03)
         |                            |
         | OpenAI-kompatible API      |
         v                            v
@@ -376,8 +402,8 @@ Qwen MLX-Modell mit MTP
 
 ## Nächste Schritte
 
-- [Topik 02: Open WebUI — Chat-Funktionalität](../02-open-webui/)
-- [Topik 03: OpenCode — Coding-Agent mit lokalem oMLX](../03-opencode-local-omlx/)
+- [Thema 02: Open WebUI — Chat-Funktionalität](../02-open-webui/)
+- [Thema 03: OpenCode — Coding-Agent mit lokalem oMLX](../03-opencode-local-omlx/)
 
 ## Quellen
 

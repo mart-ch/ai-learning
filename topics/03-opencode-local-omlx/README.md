@@ -1,9 +1,24 @@
 # 03 · OpenCode: Installation & Konfiguration mit lokalem oMLX
 
-**OpenCode** ist ein Open-Source-Coding-Agent für das Terminal. Dieser Topik installiert **OpenCode V2** und verbindet ihn mit dem lokalen oMLX-Server aus [Topik 01](../01-omlx-local-llm/) — damit der Coding-Agent das Qwen-Modell ohne Cloud nutzt. Allgemeinere OpenCode-V2-Konfiguration (Agents, Permissions, Commands, Tuning) und die Abstimmung mit der oMLX-Modellconfig folgen in [Topik 04](../04-llm-tuning/).
+**OpenCode** ist ein Open-Source-Coding-Agent für das Terminal. Dieses Thema installiert **OpenCode V2** und verbindet ihn mit dem lokalen oMLX-Server aus [Thema 01](../01-omlx-local-llm/) — damit der Coding-Agent das Qwen-Modell ohne Cloud nutzt. Allgemeinere OpenCode-V2-Konfiguration (Agents, Permissions, Commands, Tuning) und die Abstimmung mit der oMLX-Modellconfig folgen in [Thema 04](../04-llm-tuning/).
 
 <img width="1413" height="608" alt="image" src="https://github.com/user-attachments/assets/a37ebb12-5265-47b5-8685-125c6f8579cf" />
 
+
+## Inhaltsverzeichnis
+
+- [Status & Änderungen](#status--änderungen)
+- [1. Voraussetzungen](#1-voraussetzungen)
+- [2. OpenCode installieren](#2-opencode-installieren)
+- [3. oMLX als Provider konfigurieren](#3-omlx-als-provider-konfigurieren)
+- [4. Erster Test in einem Projekt](#4-erster-test-in-einem-projekt)
+- [5. Sicherheitskonfiguration](#5-sicherheitskonfiguration)
+- [6. Start, Stopp und Updates](#6-start-stopp-und-updates)
+- [7. Probleme und Lösungen](#7-probleme-und-lösungen)
+  - [OpenCode zeigt das Modell nicht](#opencode-zeigt-das-modell-nicht)
+  - [oMLX erreichbar, aber OpenCode schlägt fehl](#omlx-erreichbar-aber-opencode-schlägt-fehl)
+- [Nächste Schritte](#nächste-schritte)
+- [Quellen](#quellen)
 
 ## Status & Änderungen
 
@@ -21,13 +36,13 @@
 
 ## 1. Voraussetzungen
 
-**oMLX läuft** mit geladenem Modell (→ [Topik 01](../01-omlx-local-llm/)):
+**oMLX läuft** mit geladenem Modell (→ [Thema 01](../01-omlx-local-llm/)):
 
 ```
 curl -s http://127.0.0.1:8000/v1/models | jq -r '.data[].id'
 ```
 
-> OpenCode läuft **nativ auf dem Mac** (kein Docker), daher `127.0.0.1` statt `host.docker.internal` — das ist der Unterschied zur Open-WebUI-Verbindung in [Topik 02](../02-open-webui/).
+> OpenCode läuft **nativ auf dem Mac** (kein Docker), daher `127.0.0.1` statt `host.docker.internal` — das ist der Unterschied zur Open-WebUI-Verbindung in [Thema 02](../02-open-webui/).
 
 ---
 
@@ -137,9 +152,9 @@ Wichtig:
 - Der Schlüssel im `models`-Map muss exakt der ID aus `/v1/models` entsprechen; `modelID` (optional) würde die ID überschreiben, die tatsächlich an den Server gesendet wird.
 - Die URL verwendet `127.0.0.1`, weil OpenCode nativ auf dem Mac und nicht im Docker-Container läuft.
 - `capabilities` und `limit` müssen realistisch sein — OpenCode prüft das nicht gegen den Server. Bei einem Coding-Agenten ist `tools: true` entscheidend (Tool-Use muss vom Modell unterstützt werden).
-- `limit.context` passend zum Modell und RAM wählen (→ [Topik 01](../01-omlx-local-llm/), Abschnitt 4). Im Beispiel 150K — der Server muss das mit KV-Cache im Unified Memory stemmen können.
+- `limit.context` passend zum Modell und RAM wählen (→ [Thema 01](../01-omlx-local-llm/), Abschnitt 4). Im Beispiel 150K — der Server muss das mit KV-Cache im Unified Memory stemmen können.
 - `compaction`: Auto-Compaction für lange Sessions (Defaults: `auto: true`, `keep.tokens: 15000`, `buffer` = 15 % des Limits, min. 16k). `keep.tokens` kleiner halten = mehr Platz für neue Arbeit, weniger Detailerhalt.
-- `mcp` ist optional (hier: MCP-Server `context-mode` per `npx`). Nicht vorhanden, nicht löschen — für reine oMLX-Nutzung einfach weglassen. Details: → [Topik 04](../04-llm-tuning/), Abschnitt 3.9.
+- `mcp` ist optional (hier: MCP-Server `context-mode` per `npx`). Nicht vorhanden, nicht löschen — für reine oMLX-Nutzung einfach weglassen. Details: → [Thema 04](../04-llm-tuning/), Abschnitt 3.9.
 - **API-Key:** Das Beispiel läuft ohne `apiKey`, weil der lokale oMLX-Server ohne Auth-Prüfung läuft. Ist im oMLX-Admin-UI eine API-Key-Prüfung aktiviert, `apiKey` in `settings` ergänzen — mit Umgebungsvariablen-Ersetzung statt Klartext: `"apiKey": "{env:OMLX_API_KEY}"` (Variable dann z. B. in `~/.zprofile` setzen). Den Key nie in committete Dateien schreiben.
 
 JSON prüfen:
@@ -189,9 +204,9 @@ Implementiere den Plan und erkläre jede erzeugte Datei kurz.
 
 ## 5. Sicherheitskonfiguration
 
-- **oMLX nur lokal lauschen** (`127.0.0.1:8000`) — → [Topik 01](../01-omlx-local-llm/), Abschnitt 8
+- **oMLX nur lokal lauschen** (`127.0.0.1:8000`) — → [Thema 01](../01-omlx-local-llm/), Abschnitt 8
 - Änderungen vor Ausführung kontrollieren
-- Shell-Befehle bestätigen lassen (Permissions-Regeln, → [Topik 04](../04-llm-tuning/), Abschnitt 3.6)
+- Shell-Befehle bestätigen lassen (Permissions-Regeln, → [Thema 04](../04-llm-tuning/), Abschnitt 3.6)
 - keine Produktions-Repositories verwenden
 - keine Secrets oder `.env`-Dateien in Prompts aufnehmen
 - keine automatischen Commits oder Pushes zulassen
@@ -243,13 +258,13 @@ und das Log prüfen:
 
 - `opencode service status` / `opencode service restart` (Service ist in V2 der Hintergrund-Prozess, der Sessions und Provider besitzt)
 - `limit.context` in der Config nicht größer wählen als der Server tatsächlich liefert
-- Log mit `OPENCODE_LOG_LEVEL=DEBUG` für eine Reproduktion (Details: → [Topik 04](../04-llm-tuning/), Abschnitt 3.12)
+- Log mit `OPENCODE_LOG_LEVEL=DEBUG` für eine Reproduktion (Details: → [Thema 04](../04-llm-tuning/), Abschnitt 3.12)
 
 ---
 
 ## Nächste Schritte
 
-- [Topik 04: LLM Tuning — OMLX Modellconfig + Opencode Config abstimmen (Memory Guard, Memory-Budget, Agents, Permissions, Commands, AGENTS.md, MCP, Troubleshooting)](../04-llm-tuning/)
+- [Thema 04: LLM Tuning — OMLX Modellconfig + Opencode Config abstimmen (Memory Guard, Memory-Budget, Agents, Permissions, Commands, AGENTS.md, MCP, Troubleshooting)](../04-llm-tuning/)
 
 ## Quellen
 
