@@ -6,7 +6,6 @@
 
 | | |
 |---|---|
-| **Ursprung** | <https://github.com/mart-ch/locale-ai-on-mac> (aufgeteilt am 27.10.2026, Open-WebUI-Anteil) |
 | **Letzte Prüfung** | 27.10.2026 |
 
 | # | Thema | Status | Update |
