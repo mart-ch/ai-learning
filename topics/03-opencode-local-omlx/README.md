@@ -2,6 +2,9 @@
 
 **OpenCode** ist ein Open-Source-Coding-Agent für das Terminal. Dieser Topik installiert **OpenCode V2** und verbindet ihn mit dem lokalen oMLX-Server aus [Topik 01](../01-omlx-local-llm/) — damit der Coding-Agent das Qwen-Modell ohne Cloud nutzt. Allgemeinere OpenCode-V2-Konfiguration (Agents, Permissions, Commands, Tuning) folgt in [Topik 04](../04-opencode-tuning/).
 
+<img width="1413" height="608" alt="image" src="https://github.com/user-attachments/assets/a37ebb12-5265-47b5-8685-125c6f8579cf" />
+
+
 ## Status & Änderungen
 
 | | |
