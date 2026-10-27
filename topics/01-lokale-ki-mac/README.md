@@ -10,7 +10,6 @@ Das Ziel ist ein vollständig lokaler Stack aus **oMLX als Inference-Server**, e
 
 | | |
 |---|---|
-| **Ursprung** | <https://github.com/mart-ch/locale-ai-on-mac> (übernommen am 27.10.2026) |
 | **Letzte Prüfung** | 27.10.2026 |
 
 ### Was ist veraltet bzw. neu (Stand Okt 2026)?
