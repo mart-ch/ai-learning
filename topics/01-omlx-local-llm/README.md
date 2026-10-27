@@ -2,6 +2,9 @@
 
 **oMLX** ist ein LLM-Inference-Server für Apple Silicon (Continuous Batching, SSD-Caching, macOS-Menüleiste). Er ist die **einzige Inference-Schicht** des lokalen Stacks: danach bauen [Open WebUI (Topik 02)](../02-open-webui/) für Chats und [OpenCode (Topik 03)](../03-opencode-local-omlx/) für Coding auf dieselbe OpenAI-kompatible API auf.
 
+<img width="1320" height="931" alt="image" src="https://github.com/user-attachments/assets/c3316931-aa5e-4542-8076-3e08f8134beb" />
+
+
 > **Wichtige Begriffsklärung:** **MTP** bedeutet *Multi-Token Prediction* und beschleunigt die Textgenerierung. **MCP** bedeutet *Model Context Protocol* und bindet Werkzeuge oder Datenquellen an. Für die Modellgeschwindigkeit braucht ihr MTP. MCP ist optional.
 
 ## Status & Änderungen
