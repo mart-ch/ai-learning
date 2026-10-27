@@ -15,9 +15,10 @@
 
 | # | Thema | Status | Update |
 |---|---|---|---|
-| 1 | **oMLX ohne Versionsverweis** | 🟡 veraltet | Aktueller Stand: **v0.7.x** (Release v0.7.3.dev2, 25.10.2026). Optional: Build mit `--with-custom-kernel` für maximale Qwen-Geschwindigkeit. → Abschnitt 3 |
-| 2 | **Qwen-Modellgröße** als „Qwen 4B / 9B / 27B" ohne Generation | 🟡 unvollständig | Die RAM-Logik bleibt gültig, die Generation hat sich weiterentwickelt: oMLX v0.7.x bringt dedizierte Kerne für **Qwen 3.5 / 3.6 / 4**. Aktuelle Generation mit MTP aus dem Admin-UI wählen. → Abschnitt 4 |
-| 3 | Homebrew-Tap, Port 8000, Admin-UI, Log-Pfade | ✅ aktuell | Keine Änderung nötig |
+| 1 | **oMLX in offiziellen Homebrew?** | 🔍 geprüft 27.10.2026 | oMLX ist **nicht** in homebrew-core. `formulae.brew.sh/api/formula/omlx.json` → 404, Formula-Datei in `Homebrew/homebrew-core` → 404. Das Bare-`omlx`-Eintrag in `brew formulae` ist die installierte **Tap-Formula**, keine offizielle Core-Formula. → Tap ist erforderlich (Abschnitt 3) |
+| 2 | **oMLX ohne Versionsverweis** | 🟡 veraltet | Aktueller Stand: **v0.7.x** (Release v0.7.3.dev2, 25.10.2026). Optional: Build mit `--with-custom-kernel` für maximale Qwen-Geschwindigkeit. → Abschnitt 3 |
+| 3 | **Qwen-Modellgröße** als „Qwen 4B / 9B / 27B" ohne Generation | 🟡 unvollständig | Die RAM-Logik bleibt gültig, die Generation hat sich weiterentwickelt: oMLX v0.7.x bringt dedizierte Kerne für **Qwen 3.5 / 3.6 / 4**. Aktuelle Generation mit MTP aus dem Admin-UI wählen. → Abschnitt 4 |
+| 4 | Port 8000, Admin-UI, Log-Pfade | ✅ aktuell | Keine Änderung nötig |
 
 **Gültig:** `brew tap jundot/omlx`, `omlx start/stop/restart`, Admin unter `http://localhost:8000/admin`, Chat-UI unter `http://localhost:8000/admin/chat`.
 
@@ -90,6 +91,8 @@ brew install git curl jq
 
 Für dieses Setup wird die Installation über Homebrew empfohlen. Dadurch lässt sich oMLX bequem über das Terminal installieren, als Hintergrunddienst starten und später mit Homebrew aktualisieren.
 
+> **Wichtig — Tap ist erforderlich:** oMLX liegt **nicht** im offiziellen homebrew-core (prüft: `formulae.brew.sh/api/formula/omlx.json` → 404). Ein Bare-`omlx`-Eintrag in `brew formulae` ist nur die bereits installierte Tap-Formula. Vor der Installation daher zuerst den Tap hinzufügen:
+
 Zunächst das oMLX-Repository zu Homebrew hinzufügen:
 
 ```
@@ -101,6 +104,8 @@ Anschließend oMLX installieren:
 ```
 brew install jundot/omlx/omlx
 ```
+
+(Alternative Schreibweise nach Tap-Installation: `brew install omlx`.)
 
 > 🔄 **Update Okt 2026:** Aktueller oMLX-Stand ist **v0.7.x** (Release v0.7.3.dev2 vom 25.10.2026). Die Homebrew-Formel bietet zusätzlich `--with-custom-kernel` (buildet native Kerne für Beschleunigung u. a. von Qwen 3.5/3.6/4). Für maximale Geschwindigkeit mit Qwen:
 >

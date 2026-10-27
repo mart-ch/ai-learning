@@ -35,19 +35,23 @@ curl -s http://127.0.0.1:8000/v1/models | jq -r '.data[].id'
 
 > 🔄 **Update Okt 2026:** OpenCode **V2** ist die aktuelle Version. Die Ursprungsdoku installierte V1 (`anomalyco/tap/opencode`). Das V2-Curl-Installer ersetzt die V1-Binary; falls eine paketverwaltete V1-Installation vorhanden ist, vorher entfernen.
 
-Offizielle Installationswege für V2 (Wahl eines):
+**Empfohlen: Homebrew** — bequem installiert, upgradet mit `brew upgrade` und nutzt die vorhandene Paketverwaltung:
+
+```
+brew install anomalyco/tap/opencode-v2
+```
+
+Alternativen (offizielle Wege, je einer):
 
 ```
 curl -fsSL https://opencode.ai/v2/install | bash
 ```
 
 ```
-brew install anomalyco/tap/opencode-v2
-```
-
-```
 npm install -g @opencode/cli
 ```
+
+(Auch verfügbar: `bun`, `pnpm`, `yarn`, `mise`, standalone-Binaries — Übersicht: <https://opencode.ai/v2/docs/>.)
 
 Prüfen:
 
@@ -81,32 +85,46 @@ curl -s http://127.0.0.1:8000/v1/models | jq -r '.data[].id'
 
 > 🔄 **Update Okt 2026 (V2-Syntax):** V1 nutzte `provider` (singular) mit `npm` und `options`. V2 verwendet `providers` (plural), `package` und `settings`. Die V1-Form wird vom Schema zwar noch akzeptiert, ist aber deprecated — die native V2-Form ist unten.
 
-Dann `~/.config/opencode/opencode.json` anlegen (native V2-Form):
+Dann `~/.config/opencode/opencode.json` anlegen. Beispiel: reale, getestete Konfiguration (Qwen3.8-27B mit MTP, ohne API-Key):
 
 ```
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "omlx/HIER-DIE-MODELL-ID-EINTRAGEN",
+  "model": "omlx/Qwen3.8-27B-oQ4e-mtp",
+  "compaction": {
+    "auto": true,
+    "keep": { "tokens": 10000 },
+    "buffer": 16000
+  },
   "providers": {
     "omlx": {
-      "name": "oMLX Local",
+      "name": "OMLX",
       "package": "@opencode/ai/providers/openai-compatible",
       "settings": {
         "baseURL": "http://127.0.0.1:8000/v1"
       },
       "models": {
-        "HIER-DIE-MODELL-ID-EINTRAGEN": {
-          "name": "Qwen lokal via oMLX",
+        "Qwen3.8-27B-oQ4e-mtp": {
+          "name": "Qwen3.8-27B-oQ4e-mtp",
           "capabilities": {
             "tools": true,
             "input": ["text"],
             "output": ["text"]
           },
           "limit": {
-            "context": 32768,
-            "output": 8192
+            "context": 150000,
+            "output": 16384
           }
         }
+      }
+    }
+  },
+  "mcp": {
+    "servers": {
+      "context-mode": {
+        "type": "local",
+        "command": ["npx", "-y", "context-mode@latest"],
+        "codemode": false
       }
     }
   }
@@ -115,12 +133,14 @@ Dann `~/.config/opencode/opencode.json` anlegen (native V2-Form):
 
 Wichtig:
 
-- Die Modellreferenz folgt dem Muster `provider-id/model-id`.
-- Der Schlüssel im `models`-Map ist die Modell-ID, die OpenCode verwendet; `modelID` (optional) überschreibt die ID, die tatsächlich an den Server gesendet wird. Hier sollte der Schlüssel exakt der ID aus `/v1/models` entsprechen.
-- Die URL verwendet hier `127.0.0.1`, weil OpenCode nativ auf dem Mac und nicht im Docker-Container läuft.
+- Die Modellreferenz folgt dem Muster `provider-id/model-id` (`"model"` = Default-Modell).
+- Der Schlüssel im `models`-Map muss exakt der ID aus `/v1/models` entsprechen; `modelID` (optional) würde die ID überschreiben, die tatsächlich an den Server gesendet wird.
+- Die URL verwendet `127.0.0.1`, weil OpenCode nativ auf dem Mac und nicht im Docker-Container läuft.
 - `capabilities` und `limit` müssen realistisch sein — OpenCode prüft das nicht gegen den Server. Bei einem Coding-Agenten ist `tools: true` entscheidend (Tool-Use muss vom Modell unterstützt werden).
-- `limit.context` passend zum Modell und RAM wählen (→ [Topik 01](../01-omlx-local-llm/), Abschnitt 4).
-- Ein `apiKey` ist für einen rein lokalen oMLX-Server ohne Auth-Prüfung nicht nötig. Falls oMLX eine API-Key-Prüfung aktiviert hat, `apiKey` in `settings` ergänzen — mit Umgebungsvariablen-Ersetzung statt Klartext: `"apiKey": "{env:OMLX_API_KEY}"`.
+- `limit.context` passend zum Modell und RAM wählen (→ [Topik 01](../01-omlx-local-llm/), Abschnitt 4). Im Beispiel 150K — der Server muss das mit KV-Cache im Unified Memory stemmen können.
+- `compaction`: Auto-Compaction für lange Sessions (Defaults: `auto: true`, `keep.tokens: 15000`, `buffer` = 15 % des Limits, min. 16k). `keep.tokens` kleiner halten = mehr Platz für neue Arbeit, weniger Detailerhalt.
+- `mcp` ist optional (hier: MCP-Server `context-mode` per `npx`). Nicht vorhanden, nicht löschen — für reine oMLX-Nutzung einfach weglassen. Details: → [Topik 04](../04-opencode-tuning/), Abschnitt 9.
+- **API-Key:** Das Beispiel läuft ohne `apiKey`, weil der lokale oMLX-Server ohne Auth-Prüfung läuft. Ist im oMLX-Admin-UI eine API-Key-Prüfung aktiviert, `apiKey` in `settings` ergänzen — mit Umgebungsvariablen-Ersetzung statt Klartext: `"apiKey": "{env:OMLX_API_KEY}"` (Variable dann z. B. in `~/.zprofile` setzen). Den Key nie in committete Dateien schreiben.
 
 JSON prüfen:
 

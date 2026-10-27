@@ -26,7 +26,7 @@ Die Topics bauen **logisch aufeinander auf**: oMLX (LLM-Server) → Open WebUI (
 
 **oMLX** ist die Inference-Schicht des lokalen Stacks: LLM-Server für Apple Silicon mit Continuous Batching, SSD-Caching und MTP (Multi-Token Prediction) für schnellere Generierung.
 
-- Installation über Homebrew (inkl. `--with-custom-kernel` für Qwen-Beschleunigung) oder native App
+- Installation über Homebrew (**Tap `jundot/omlx` erforderlich** — nicht in homebrew-core), inkl. `--with-custom-kernel` für Qwen-Beschleunigung, oder native App
 - Qwen-Modellwahl nach RAM (aktuelle Generation: Qwen 3.5/3.6/4 mit MTP)
 - MTP-Test und -Verifikation über API + Logs
 - Probleme & Lösungen: Port 8000, RAM-Auslastung, inaktives MTP
@@ -47,8 +47,8 @@ Chat-Oberfläche als Docker-Container, angebunden an oMLX aus Topik 01 — ohne 
 
 OpenCode **V2** als Coding-Agent, der das lokale Qwen-Modell aus Topik 01 nutzt — komplett ohne Cloud.
 
-- V2-Installation (`anomalyco/tap/opencode-v2`, curl-Installer, npm) + V1→V2-Umstellung
-- oMLX als Provider: native V2-Config (`providers`, `package`, `settings`, `models`)
+- V2-Installation (Homebrew bevorzugt: `anomalyco/tap/opencode-v2`; Alternativen: curl, npm) + V1→V2-Umstellung
+- oMLX als Provider: native V2-Config, inkl. realistischem Beispiel (Qwen3.8-27B, ohne API-Key)
 - Erster Test, `AGENTS.md`, Sicherheitskonfiguration
 - ✅ Update Okt 2026: V1-Config-Syntax (`provider` + `npm`) durch V2-Syntax ersetzt
 
