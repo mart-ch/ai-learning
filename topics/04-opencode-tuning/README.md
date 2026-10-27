@@ -1,6 +1,6 @@
 # 02 · OpenCode: Konfiguration und Tuning
 
-OpenCode ist ein Open-Source-Coding-Agent (Terminal, Desktop, Web). Diese Doku beschreibt **OpenCode V2** — die 2026 veröffentlichte, Rust-kernbasierte Generation. Alle Angaben nach offiziellem Stand: [opencode.ai/v2/docs](https://opencode.ai/v2/docs/).
+OpenCode ist ein Open-Source-Coding-Agent (Terminal, Desktop, Web). Diese Doku beschreibt **OpenCode V2** — die 2026 veröffentlichte, Rust-kernbasierte Generation. Sie baut auf [Topik 03](../03-opencode-local-omlx/) auf (Installation + oMLX-Anbindung) und zeigt das komplette Konfigurations- und Tuning-Werkzeug. Alle Angaben nach offiziellem Stand: [opencode.ai/v2/docs](https://opencode.ai/v2/docs/).
 
 ## Status & Änderungen
 
@@ -8,6 +8,7 @@ OpenCode ist ein Open-Source-Coding-Agent (Terminal, Desktop, Web). Diese Doku b
 |---|---|
 | **Letzte Prüfung** | 27.10.2026 |
 | **Quellen** | <https://opencode.ai/v2/docs/> (Config, Providers, Models, Agents, Permissions, Commands, Instructions, Compaction, Troubleshooting) |
+| **Position** | Vertiefung zu [Topik 03](../03-opencode-local-omlx/); lokale oMLX-Verbindung selbst dort dokumentiert |
 
 > ⚠️ **V1 vs. V2:** OpenCode 1 und 2 nutzen beide den `opencode`-Befehl, werden aber nicht mehr parallel installiert. Das V2-Curl-Installer ersetzt die V1-Binary; eine paketverwaltete V1-Installation vorher entfernen. V1-Config-Dateien bleiben großteils kompatibel, aber die nativen V2-Formen sind bevorzugt. V1-Doku: <https://opencode.ai/docs/> (veraltet).
 
@@ -79,7 +80,7 @@ Referenz-Syntax: `provider/model` (optional `#variant`):
 
 Der Root-Default trägt aktuell **keinen** `#variant` — Variants werden bei Agenten und Commands gewählt.
 
-### Local Modelle (relevanter Teil fürs [Topik 01](../01-lokale-ki-mac/))
+### Local Modelle (relevanter Teil fürs [Topik 01](../01-omlx-local-llm/))
 
 OpenCode entdeckt **automatisch** Modelle von **Ollama**, **LM Studio** und **vLLM** an ihren Standard-Adressen:
 
@@ -165,7 +166,7 @@ Provider- und Modell-Einträge dürfen Requests mit `settings`, `headers` und `b
 "limit": { "context": 200000, "output": 32000 }
 ```
 
-Für lokale Modelle (kleiner RAM) bewusst klein halten, siehe [Topik 01](../01-lokale-ki-mac/), Abschnitt 4.
+Für lokale Modelle (kleiner RAM) bewusst klein halten, siehe [Topik 01](../01-omlx-local-llm/), Abschnitt 4.
 
 ### 4.3 Variants
 
